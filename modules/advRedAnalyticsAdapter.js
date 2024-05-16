@@ -93,7 +93,7 @@ function convertBidTimeout(origEvent) {
 
 function convertBidderError(origEvent) {
   let shortEvent = {}
-  shortEvent.bids = origEvent.bidderRequest && origEvent.bidderRequest.bids && origEvent.bids.map(convertBid)
+  shortEvent.bids = origEvent.bidderRequest && origEvent.bidderRequest.bids && origEvent.bidderRequest.bids.map(convertBid)
   return shortEvent
 }
 
