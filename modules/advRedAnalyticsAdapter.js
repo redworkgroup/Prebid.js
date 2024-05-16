@@ -59,33 +59,14 @@ function convertBid(bid) {
   if (!bid) return bid
 
   const shortBid = {}
-  shortBid.auctionId = bid.auctionId
+  shortBid.adUnitCode = bid.adUnitCode
   shortBid.bidder = bid.bidder
-  shortBid.bidderRequestId = bid.bidderRequestId
-  shortBid.bidId = bid.bidId
-  shortBid.crumbs = bid.crumbs
   shortBid.cpm = bid.cpm
   shortBid.currency = bid.currency
   shortBid.mediaTypes = bid.mediaTypes
   shortBid.sizes = bid.sizes
-  shortBid.transactionId = bid.transactionId
-  shortBid.adUnitCode = bid.adUnitCode
-  shortBid.bidRequestsCount = bid.bidRequestsCount
   shortBid.serverResponseTimeMs = bid.serverResponseTimeMs
   return shortBid
-}
-
-function convertRequest(request) {
-  if (!request) return request
-
-  const shortRequest = {}
-  shortRequest.auctionId = request.auctionId
-  shortRequest.auctionStart = request.auctionStart
-  shortRequest.bidderRequestId = request.bidderRequestId
-  shortRequest.bidderCode = request.bidderCode
-  shortRequest.bids = request.bids && request.bids.map(convertBid)
-
-  return shortRequest
 }
 
 function convertAuctionInit(origEvent) {
@@ -93,86 +74,46 @@ function convertAuctionInit(origEvent) {
   shortEvent.auctionId = origEvent.auctionId
   shortEvent.timeout = origEvent.timeout
   shortEvent.adUnits = origEvent.adUnits && origEvent.adUnits.map(convertAdUnit)
-  shortEvent.bidderRequests = origEvent.bidderRequests && origEvent.bidderRequests.map(convertRequest)
-  return shortEvent
-}
-
-function convertAuctionEnd(origEvent) {
-  let shortEvent = {}
-  shortEvent.auctionId = origEvent.auctionId
-  shortEvent.end = origEvent.end
-  shortEvent.start = origEvent.start
-  shortEvent.adUnitCodes = origEvent.adUnitCodes
-  shortEvent.bidsReceived = origEvent.bidsReceived && origEvent.bidsReceived.map(convertBid)
-  return shortEvent
-}
-
-function convertBidTimeout(origEvent) {
-  let shortEvent = {}
-  shortEvent.bidders = origEvent && origEvent.map ? origEvent.map(convertBid) : origEvent
   return shortEvent
 }
 
 function convertBidRequested(origEvent) {
   let shortEvent = {}
-  shortEvent.auctionId = origEvent.auctionId
   shortEvent.bidderCode = origEvent.bidderCode
-  shortEvent.doneCbCallCount = origEvent.doneCbCallCount
-  shortEvent.start = origEvent.start
-  shortEvent.bidderRequestId = origEvent.bidderRequestId
   shortEvent.bids = origEvent.bids && origEvent.bids.map(convertBid)
-  shortEvent.auctionStart = origEvent.auctionStart
   shortEvent.timeout = origEvent.timeout
   return shortEvent
 }
 
-function convertBidResponse (origEvent) {
+function convertBidTimeout(origEvent) {
   let shortEvent = {}
-  shortEvent.bidderCode = origEvent.bidderCode
-  shortEvent.width = origEvent.width
-  shortEvent.height = origEvent.height
-  shortEvent.adId = origEvent.adId
-  shortEvent.mediaType = origEvent.mediaType
-  shortEvent.cpm = origEvent.cpm
-  shortEvent.currency = origEvent.currency
-  shortEvent.requestId = origEvent.requestId
-  shortEvent.timeToRespond = origEvent.timeToRespond
-  shortEvent.requestTimestamp = origEvent.requestTimestamp
-  shortEvent.responseTimestamp = origEvent.responseTimestamp
-  shortEvent.netRevenue = origEvent.netRevenue
-  shortEvent.size = origEvent.size
+  shortEvent.bids = origEvent && origEvent.map ? origEvent.map(convertBid) : origEvent
+  return shortEvent
+}
+
+function convertBidderError(origEvent) {
+  let shortEvent = {}
+  shortEvent.bids = origEvent.bidderRequest && origEvent.bidderRequest.bids && origEvent.bids.map(convertBid)
+  return shortEvent
+}
+
+function convertAuctionEnd(origEvent) {
+  let shortEvent = {}
+  shortEvent.adUnitCodes = origEvent.adUnitCodes
+  shortEvent.bidsReceived = origEvent.bidsReceived && origEvent.bidsReceived.map(convertBid)
+  shortEvent.noBids = origEvent.noBids && origEvent.noBids.map(convertBid)
   return shortEvent
 }
 
 function convertBidWon(origEvent) {
   let shortEvent = {}
-  shortEvent.adId = origEvent.adId
   shortEvent.adUnitCode = origEvent.adUnitCode
   shortEvent.bidderCode = origEvent.bidderCode
-  shortEvent.height = origEvent.height
   shortEvent.mediaType = origEvent.mediaType
   shortEvent.netRevenue = origEvent.netRevenue
   shortEvent.cpm = origEvent.cpm
-  shortEvent.requestTimestamp = origEvent.requestTimestamp
-  shortEvent.responseTimestamp = origEvent.responseTimestamp
   shortEvent.size = origEvent.size
-  shortEvent.width = origEvent.width
   shortEvent.currency = origEvent.currency
-  shortEvent.bidder = origEvent.bidder
-  return shortEvent
-}
-
-function convertBidderDone(origEvent) {
-  let shortEvent = {}
-  shortEvent.auctionStart = origEvent.auctionStart
-  shortEvent.bidderCode = origEvent.bidderCode
-  shortEvent.bidderRequestId = origEvent.bidderRequestId
-  shortEvent.bids = origEvent.bids && origEvent.bids.map(convertBid)
-  shortEvent.doneCbCallCount = origEvent.doneCbCallCount
-  shortEvent.start = origEvent.start
-  shortEvent.timeout = origEvent.timeout
-  shortEvent.tid = origEvent.tid
-  shortEvent.src = origEvent.src
   return shortEvent
 }
 
@@ -183,34 +124,31 @@ function handleEvent(eventType, origEvent) {
   }
 
   let shortEvent
-
+  console.log(eventType + ':\n')
+  console.log(origEvent)
   switch (eventType) {
     case EVENTS.AUCTION_INIT: {
       shortEvent = convertAuctionInit(origEvent)
-      break
-    }
-    case EVENTS.AUCTION_END: {
-      shortEvent = convertAuctionEnd(origEvent)
-      break
-    }
-    case EVENTS.BID_TIMEOUT: {
-      shortEvent = convertBidTimeout(origEvent)
       break
     }
     case EVENTS.BID_REQUESTED: {
       shortEvent = convertBidRequested(origEvent)
       break
     }
-    case EVENTS.BID_RESPONSE: {
-      shortEvent = convertBidResponse(origEvent)
+    case EVENTS.BID_TIMEOUT: {
+      shortEvent = convertBidTimeout(origEvent)
+      break
+    }
+    case EVENTS.BIDDER_ERROR: {
+      shortEvent = convertBidderError(origEvent)
+      break
+    }
+    case EVENTS.AUCTION_END: {
+      shortEvent = convertAuctionEnd(origEvent)
       break
     }
     case EVENTS.BID_WON: {
       shortEvent = convertBidWon(origEvent)
-      break
-    }
-    case EVENTS.BIDDER_DONE: {
-      shortEvent = convertBidderDone(origEvent)
       break
     }
     default:
@@ -219,7 +157,6 @@ function handleEvent(eventType, origEvent) {
 
   shortEvent.eventType = eventType
   shortEvent.auctionId = origEvent.auctionId
-  shortEvent.adUnitCode = origEvent.adUnitCode
   shortEvent.timestamp = origEvent.timestamp || Date.now()
 
   sendEvent(shortEvent)
