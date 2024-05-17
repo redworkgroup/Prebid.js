@@ -35,7 +35,7 @@ function sendEvents() {
     const url = initOptions.url ? initOptions.url : DEFAULT_EVENT_URL
     ajax(
       url,
-      () => logInfo("AdvRed Analytics sent " + queue.length + " events"),
+      () => logInfo('AdvRed Analytics sent ' + queue.length + ' events'),
       JSON.stringify(message),
       {
         method: 'POST',
@@ -124,8 +124,6 @@ function handleEvent(eventType, origEvent) {
   }
 
   let shortEvent
-  console.log(eventType + ':\n')
-  console.log(origEvent)
   switch (eventType) {
     case EVENTS.AUCTION_INIT: {
       shortEvent = convertAuctionInit(origEvent)

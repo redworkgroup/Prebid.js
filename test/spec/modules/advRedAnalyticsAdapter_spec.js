@@ -74,7 +74,7 @@ describe('AdvRed Analytics Adapter', function () {
 
       const message = JSON.parse(server.requests[0].requestBody);
       expect(message.pwId).to.exist;
-      expect(message.publisher_id).to.equal(publisher_id);
+      expect(message.publisherId).to.equal(publisher_id);
       expect(message.events.length).to.equal(1);
       expect(message.events[0].eventType).to.equal('bidWon');
       expect(message.events[0].ad).to.be.undefined;
@@ -112,4 +112,4 @@ describe('AdvRed Analytics Adapter', function () {
     });
   });
 });
-s
+
