@@ -8,7 +8,7 @@ import {getRefererInfo} from '../src/refererDetection.js';
 /**
  * advRedAnalyticsAdapter.js - analytics adapter for AdvRed
  */
-const DEFAULT_EVENT_URL = 'https://analytics-api.advred.com/endpoint'
+const DEFAULT_EVENT_URL = 'https://analytics.adv.red/endpoint'
 
 let ajax = ajaxBuilder(10000)
 let pwId
@@ -26,7 +26,7 @@ function sendEvents() {
   if (queue.length > 0) {
     const message = {
       pwId: pwId,
-      publisherId: initOptions.publisher_id,
+      publisherId: initOptions.publisherId,
       events: queue,
       pageUrl: getRefererInfo().page
     }

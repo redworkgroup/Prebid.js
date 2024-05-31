@@ -50,7 +50,7 @@ describe('AdvRed Analytics Adapter', function () {
         provider: 'advRed',
         options: {
           url: custom_endpoint,
-          publisher_id: '1234567890'
+          publisherId: '1234567890'
         }
       });
 
@@ -58,11 +58,11 @@ describe('AdvRed Analytics Adapter', function () {
     });
 
     it('bid won event', function() {
-      let publisher_id = '1234567890';
+      let publisherId = '1234567890';
       advRedAnalytics.enableAnalytics({
         provider: 'advRed',
         options: {
-          publisher_id: publisher_id
+          publisherId: publisherId
         }
       });
 
@@ -74,7 +74,7 @@ describe('AdvRed Analytics Adapter', function () {
 
       const message = JSON.parse(server.requests[0].requestBody);
       expect(message.pwId).to.exist;
-      expect(message.publisherId).to.equal(publisher_id);
+      expect(message.publisherId).to.equal(publisherId);
       expect(message.events.length).to.equal(1);
       expect(message.events[0].eventType).to.equal('bidWon');
       expect(message.events[0].ad).to.be.undefined;
@@ -87,7 +87,7 @@ describe('AdvRed Analytics Adapter', function () {
       advRedAnalytics.enableAnalytics({
         provider: 'advRed',
         options: {
-          publisher_id: '1234567890'
+          publisherId: '1234567890'
         }
       });
 
@@ -103,7 +103,7 @@ describe('AdvRed Analytics Adapter', function () {
       advRedAnalytics.enableAnalytics({
         provider: 'advRed',
         options: {
-          publisher_id: '1234567890'
+          publisherId: '1234567890'
         }
       });
 
