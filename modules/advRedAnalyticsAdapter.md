@@ -11,12 +11,12 @@ The AdvRed analytics adapter can be used by all clients after approval. For more
 please visit <https://ams.adv.red/>
 
 ### Analytics Options
-| Param enableAnalytics | Scope    | Type   | Description                                          | Example                          |
-|-----------------------|----------|--------|------------------------------------------------------|----------------------------------|
-| provider              | Required | String | The name of this Adapter.                            | `'advRed'`                       |
-| params                | Required | Object | Details of module params.                            |                                  |
-| params.publisherId    | Required | String | This is the Publisher ID value obtained from AdvRed. | `'123456'`                       |
-| params.url            | Optional | String | Custom URL of the endpoint to collect the events     | `'https://pub1.analytics.adv.red'` |
+| Param enableAnalytics | Scope    | Type   | Description                                          | Example                                |
+|-----------------------|----------|--------|------------------------------------------------------|----------------------------------------|
+| provider              | Required | String | The name of this Adapter.                            | `'advRed'`                             |
+| params                | Required | Object | Details of module params.                            |                                        |
+| params.publisherId    | Required | String | This is the Publisher ID value obtained from AdvRed. | `'123456'`                             |
+| params.url            | Optional | String | Custom URL of the endpoint to collect the events     | `'https://pub1.api.adv.red/api/event'` |
 
 ### Example Configuration
 

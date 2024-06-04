@@ -70,7 +70,7 @@ describe('AdvRed Analytics Adapter', function () {
       advRedAnalytics.sendEvents();
 
       expect(server.requests.length).to.equal(1);
-      expect(server.requests[0].url).to.equal('https://analytics-api.advred.com/endpoint');
+      expect(server.requests[0].url).to.equal('https://api.adv.red/api/event');
 
       const message = JSON.parse(server.requests[0].requestBody);
       expect(message.pwId).to.exist;
@@ -112,4 +112,3 @@ describe('AdvRed Analytics Adapter', function () {
     });
   });
 });
-

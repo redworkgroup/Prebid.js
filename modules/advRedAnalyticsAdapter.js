@@ -8,7 +8,7 @@ import {getRefererInfo} from '../src/refererDetection.js';
 /**
  * advRedAnalyticsAdapter.js - analytics adapter for AdvRed
  */
-const DEFAULT_EVENT_URL = 'https://analytics.adv.red/endpoint'
+const DEFAULT_EVENT_URL = 'https://api.adv.red/api/event'
 
 let ajax = ajaxBuilder(10000)
 let pwId
